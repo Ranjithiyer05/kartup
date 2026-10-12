@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Admin sign in · kartup{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block body %}
+<main class="shell">
+  <section class="card card-narrow" aria-labelledby="login-title">
+    <header class="brand brand-small">
+      <h1 id="login-title">Admin sign in</h1>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="notice notice-{{ 'error' if category == 'error' else 'info' }}" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% if not configured %}
+      <div class="notice notice-error" role="alert">Admin access is disabled until ADMIN_PASSWORD_HASH is configured.</div>
+    {% endif %}
+    <form method="post" class="form" autocomplete="on">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn"><span class="btn-label">Sign in</span></button>
+    </form>
+  </section>
+</main>
+{% endblock %}
